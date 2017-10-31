@@ -1,0 +1,2 @@
+INSERT INTO FT VALUES (1)
+/
