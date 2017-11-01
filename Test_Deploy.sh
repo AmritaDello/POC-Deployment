@@ -99,15 +99,26 @@ fi
 }
 
 function predeploy() {
+
+log "Verifying whether the DML scripts have appropriate filename"
+for filename in $(ls Deployment/5_DML); do	
+			if [[ $filename == *[@]* ]]
+			then
+			log "Error: Incorrect filename. Please address immediately. $filename" 1
+			exit 1
+			fi
+done
+log "Verified. Accurate filenames."
+
    log "Building the object file for deployment"
 	for f in $(ls Full_Schema_DDL/)
 		do
 		if [[ -d Full_Schema_DDL/${f} ]]; then
 			for foldername in $(ls Full_Schema_DDL/${f})
 			do
-			if [ $foldername == "Packages"]; then
-				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '.pks$' | sed 's/^/@@/' > Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
-				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '.pkb$' | sed 's/^/@@/' >> Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
+			if [ $foldername == Packages ]; then
+				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '^BuildAll' | grep '.pks$' | sed 's/^/@@/' > Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
+				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '^BuildAll' | grep '.pkb$' | sed 's/^/@@/' >> Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
 			else
 				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '^BuildAll' | sed 's/^/@@/' > Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
 			fi
@@ -167,8 +178,7 @@ function deploy_scripts() {
 		do
 		log "Entering into $f"
 	if [[ -d Deployment/${f} ]]; then
-		for filename in $(ls Deployment/${f})
-		do
+		for filename in `ls Deployment/$f | sort -V`; do
 		if [[ ! -d Deployment/${f}/${filename} ]]; then
 			countexistence=$(grep -c "$filename" VERSIONS_DATA.txt)
 			if [ $countexistence != 1 ]; then

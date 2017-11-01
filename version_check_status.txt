@@ -1,0 +1,4 @@
+VERSIONS Table exists                                                           
+
+PL/SQL procedure successfully completed.
+
