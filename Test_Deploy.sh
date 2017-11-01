@@ -105,7 +105,12 @@ function predeploy() {
 		if [[ -d Full_Schema_DDL/${f} ]]; then
 			for foldername in $(ls Full_Schema_DDL/${f})
 			do
+			if [ $foldername == "Packages"]; then
+				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '.pks$' | sed 's/^/@@/' > Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
+				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '.pkb$' | sed 's/^/@@/' >> Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
+			else
 				ls Full_Schema_DDL/${f}/$foldername -1 | grep -v '^BuildAll' | sed 's/^/@@/' > Full_Schema_DDL/${f}/$foldername/BuildAll$foldername.sql
+			fi
 			done
 		fi
 	done
