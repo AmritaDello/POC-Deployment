@@ -1,9 +1,0 @@
-
-1 row created.
-
-insert into HR.versions(FILENAME) values ('hr__insert_table_ft_201710311032465850.sql')
-               *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
-
