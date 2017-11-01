@@ -178,7 +178,8 @@ function deploy_scripts() {
 		do
 		log "Entering into $f"
 	if [[ -d Deployment/${f} ]]; then
-		for filename in `ls Deployment/$f | sort -V`; do
+#		for filename in `ls Deployment/$f | sort -V`; do
+		for filename in $(ls -v Deployment/${f}); do
 		if [[ ! -d Deployment/${f}/${filename} ]]; then
 			countexistence=$(grep -c "$filename" VERSIONS_DATA.txt)
 			if [ $countexistence != 1 ]; then

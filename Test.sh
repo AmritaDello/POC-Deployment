@@ -1,12 +1,13 @@
 #!/bin/bash
 
 for f in $(ls Deployment/); do
-		echo "Entering into $f"
 	if [[ -d Deployment/${f} ]]; then
-		for filename in `ls Deployment/$f | sort -V`; do
+		for filename in $(ls -v Deployment/${f}); do
 			if [[ $filename == *[@]* ]]
 			then
 			echo "Issue found"
+			else
+			echo $filename
 			fi
 	   done
 	fi
